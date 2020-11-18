@@ -1,1 +1,1 @@
-# manipilacao_de_diret-rio
+# manipilacao_de_diretorio
