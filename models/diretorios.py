@@ -14,12 +14,11 @@ class GerenciamentoDiretorio():
         self.diretorio_origem = diretorio_origem
 
     def get_infos(self):
-        # recuperar carro, data, hora, camera
 
         diretorio_origem = self.diretorio_origem.split("/")
 
         nome_arquivo, extensao = os.path.splitext(diretorio_origem[8])
-
+        antigo_nome_arquivo = nome_arquivo
         nome_arquivo = nome_arquivo.split("-")
 
         carro = diretorio_origem[4]
@@ -27,17 +26,18 @@ class GerenciamentoDiretorio():
         data = "20" + nome_arquivo[1]
         hora = nome_arquivo[2]
         extensao = extensao
+        nome_arquivo = antigo_nome_arquivo
 
         return carro, camera, data, hora, nome_arquivo, extensao
 
-    def cria_diretorio(self, carro, camera, data, hora):
+    def cria_diretorio(self, carro, camera, data):
 
-        path = join(carro, camera, data, hora)
+        path = join(carro, camera, data)
 
         if os.path.isdir(path):
             pass
         else:
-            os.mkdir(path)
+            os.makedirs(path)
 
         return path
 
@@ -45,13 +45,15 @@ class GerenciamentoDiretorio():
 
         novo_nome_arquivo = data+hora+extensao
         nome_arquivo = nome_arquivo+extensao
-        os.rename(nome_arquivo, novo_nome_arquivo)
-
+        try:
+            os.rename('home/publico/Video/17025/2020-11-19/record/1/'+nome_arquivo, 'home/publico/Video/17025/2020-11-19/record/1/'+novo_nome_arquivo)
+        except:
+            pass
         return novo_nome_arquivo
 
     def move_arquivo(self, diretorio_origem, diretorio_destino, novo_nome_arquivo):
 
-        diretorio_origem = join(diretorio_origem, novo_nome_arquivo)
+        diretorio_origem = join('home/publico/Video/17025/2020-11-19/record/1/', novo_nome_arquivo)
         diretorio_destino = join(diretorio_destino, novo_nome_arquivo)
         shutil.move(diretorio_origem, diretorio_destino)
 
@@ -60,11 +62,11 @@ class GerenciamentoDiretorio():
     def run(self):
 
         diretorio_origem = self.diretorio_origem
-        arquivos = os.listdir(diretorio_origem)
+        # arquivos = os.listdir(diretorio_origem)
 
-        for arquivo in arquivos:
-            if arquivo.endswith(".mp4"):
-                carro, camera, data, hora, nome_arquivo, extensao = self.get_infos()
-                diretorio_destino = self.cria_diretorio(carro, camera, data, hora)
-                novo_nome_arquivo = self.renomeia_arquivo(data, hora, extensao, nome_arquivo)
-                self.move_arquivo(diretorio_origem, diretorio_destino, novo_nome_arquivo)
+        # # for arquivo in arquivos:
+        # if arquivo.endswith(".mp4"):
+        carro, camera, data, hora, nome_arquivo, extensao = self.get_infos()
+        diretorio_destino = self.cria_diretorio(carro, camera, data)
+        novo_nome_arquivo = self.renomeia_arquivo(data, hora, extensao, nome_arquivo)
+        self.move_arquivo(diretorio_origem, diretorio_destino, novo_nome_arquivo)
