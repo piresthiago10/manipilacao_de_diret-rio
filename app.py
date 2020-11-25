@@ -1,15 +1,24 @@
-from models import diretorios
 import os
 from os.path import join
 
-dir = "home/publico/Video"
-for root, dirs, files in os.walk(dir):
-    for filename in files:
-        path = join(root, filename)
-        if path.endswith(".mp4"): 
-            print(path)
-            GerenciamentoDiretorio = diretorios.GerenciamentoDiretorio(root, filename)
-            GerenciamentoDiretorio.run()
-        else:
-            os.remove(path) 
-        #     # os.remove(dir)
+from models import diretorios
+from models import system
+
+System = system.System()
+ReadJson = System.ReadJson()
+def main():
+
+    diretorio = ReadJson['diretorio']
+    extensao = ReadJson['extensao']
+
+    for raiz, diretorios, arquivos in os.walk(diretorio):
+        for arquivo in raiz:
+            path = join(raiz, arquivo)
+            if path.endswith(extensao): 
+                GerenciamentoDiretorio = diretorios.GerenciamentoDiretorio(raiz, arquivo)
+                GerenciamentoDiretorio.run()
+            else:
+                os.remove(path) 
+
+if __name__ == '__main__':
+    main()
