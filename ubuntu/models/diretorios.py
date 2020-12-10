@@ -10,12 +10,13 @@ from os.path import join
 
 
 class GerenciamentoDiretorio():
+
     def __init__(self, diretorio_origem, nome_arquivo):
         self.diretorio_origem = diretorio_origem
         self.nome_arquivo = nome_arquivo
 
     def get_infos(self):
-
+        
         diretorio_origem = self.diretorio_origem.split("/")
 
         
